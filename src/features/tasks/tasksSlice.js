@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-const tasksSlice=createSlice({
+ export const tasksSlice=createSlice({
 name:"tasks",
 initialState:{
     tasks:[
         {
             dated:"15/01/2025",
-            tasks:[{
+            taskData:[{
                 title:"Go to Gym",
                 status:"Completed"
             },
@@ -20,7 +20,7 @@ initialState:{
         },
         {
             dated:"16/01/2025",
-            tasks:[{
+            taskData:[{
                 title:"Go to Gym",
                 status:"Pending"
             },
@@ -38,4 +38,4 @@ initialState:{
 reducers:{}
 
 })
-export default tasksSlice.reducer
+export default tasksSlice.reducer;
