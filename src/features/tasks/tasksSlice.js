@@ -7,35 +7,48 @@ initialState:{
             dated:"15/01/2025",
             taskData:[{
                 title:"Go to Gym",
-                status:"Completed"
+                status:true,
+                taskId:"T11"
             },
         {
             title:"Buy Groceries",
-            status:"Completed"
+            status:true,
+            taskId:"T12"
         },
     {
         title:"Water Plants",
-        status:"Pending"
+        status:false,
+        taskId:"T13"
     }]
         },
         {
             dated:"16/01/2025",
             taskData:[{
                 title:"Go to Gym",
-                status:"Pending"
+                status:false,
+                taskId:"T14"
             },
         {
             title:"Room Cleaning",
-            status:"Completed"
+            status:true,
+            taskId:"T15"
         },
     {
         title:"Water Plants",
-        status:"Completed"
+        status:true,
+        taskId:"T16"
     }]
         }
     ]
 },
-reducers:{}
+reducers:{
+    statusButtonPressed:(state,action)=>{
+const dateIndex=state.tasks.findIndex(task=>task.dated===action.payload.date)
+const taskIndex=state.tasks[dateIndex].taskData.findIndex(task=>task.taskId===action.payload.id)
+state.tasks[dateIndex].taskData[taskIndex].status= !state.tasks[dateIndex].taskData[taskIndex].status
+}
+}
 
 })
+export const {statusButtonPressed}=tasksSlice.actions
 export default tasksSlice.reducer;

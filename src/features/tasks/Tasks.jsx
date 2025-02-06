@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { statusButtonPressed } from "./tasksSlice";
 
 const Tasks=()=>{
+    const dispatch=useDispatch()
 const tasks=useSelector(state=>{
     return state.tasks
 })
@@ -10,9 +12,9 @@ return(<>
           <h2>{task.dated}</h2>
           <ul>
             {task.taskData.map((t, i) => (
-              <li key={i}><p>{t.title}</p>
-              <p>Status: {t.status}</p></li>
-
+              <li key={i}><p>{t.title}{"  "}
+              <button onClick={()=>dispatch(statusButtonPressed({date:task.dated,id:t.taskId}))}>{t.status?"Completed":"Pending"}</button> </p></li>
+             
             ))}
           </ul>
         </div>))}
