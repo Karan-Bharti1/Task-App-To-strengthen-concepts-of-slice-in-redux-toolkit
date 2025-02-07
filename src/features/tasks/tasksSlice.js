@@ -1,52 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+export const fetchTaskData=createAsyncThunk("tasks/fetchTasks",async()=>{
+    const response=await axios.get('https://task-list-hw-server-student-neog-ca.replit.app/tasks')
+    console.log(response)
+    return response.data
+})
  export const tasksSlice=createSlice({
 name:"tasks",
 initialState:{
-    tasks:[
-        {
-            dated:"15/01/2025",
-            taskData:[{
-                title:"Go to Gym",
-                status:true,
-                taskId:"T11"
-            },
-        {
-            title:"Buy Groceries",
-            status:true,
-            taskId:"T12"
-        },
-    {
-        title:"Water Plants",
-        status:false,
-        taskId:"T13"
-    }]
-        },
-        {
-            dated:"16/01/2025",
-            taskData:[{
-                title:"Go to Gym",
-                status:false,
-                taskId:"T14"
-            },
-        {
-            title:"Room Cleaning",
-            status:true,
-            taskId:"T15"
-        },
-    {
-        title:"Water Plants",
-        status:true,
-        taskId:"T16"
-    }]
-        }
-    ]
+    tasks:[],
+    status:"idle",
+    error:null
 },
 reducers:{
     statusButtonPressed:(state,action)=>{
-const dateIndex=state.tasks.findIndex(task=>task.dated===action.payload.date)
-const taskIndex=state.tasks[dateIndex].taskData.findIndex(task=>task.taskId===action.payload.id)
-state.tasks[dateIndex].taskData[taskIndex].status= !state.tasks[dateIndex].taskData[taskIndex].status
+const dateIndex=state.tasks.findIndex(task=>task.date===action.payload.date)
+const taskIndex=state.tasks[dateIndex].tasks.findIndex(task=>task.taskId===action.payload.id)
+state.tasks[dateIndex].tasks[taskIndex].taskStatus= !state.tasks[dateIndex].tasks[taskIndex].taskStatus
 }
+},
+extraReducers:(builder)=>{
+    builder.addCase(fetchTaskData.pending,(state)=>{
+        state.status="loading"
+     })
+     builder.addCase(fetchTaskData.fulfilled,(state,action)=>{
+        state.status="succeeded"
+        state.tasks=action.payload.tasks
+     })
+     builder.addCase(fetchTaskData.rejected,(state,action)=>{
+        state.status="rejected"
+        state.error=action.payload.message
+     })
 }
 
 })

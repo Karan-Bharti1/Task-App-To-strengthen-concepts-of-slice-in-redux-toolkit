@@ -1,19 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
-import { statusButtonPressed } from "./tasksSlice";
+import { fetchTaskData, statusButtonPressed } from "./tasksSlice";
+import { useEffect } from "react";
 
 const Tasks=()=>{
     const dispatch=useDispatch()
 const tasks=useSelector(state=>{
     return state.tasks
 })
-console.log(tasks)
+useEffect(()=>
+{dispatch(fetchTaskData())},[dispatch])
 return(<>
-{tasks.tasks.map((task,index)=>(   <div key={task.id || index}>
-          <h2>{task.dated}</h2>
+{tasks.tasks?.map((chore,index)=>(   <div key={chore.id || index}>
+          <h2>{chore.date}</h2>
           <ul>
-            {task.taskData.map((t, i) => (
-              <li key={i}><p>{t.title}{"  "}
-              <button onClick={()=>dispatch(statusButtonPressed({date:task.dated,id:t.taskId}))}>{t.status?"Completed":"Pending"}</button> </p></li>
+            {chore.tasks.map((t, i) => (
+              <li key={i}><p>{t.task}{"  "}
+              <button onClick={()=>dispatch(statusButtonPressed({date:chore.date,id:t.taskId}))}>{t.taskStatus?"Completed":"Pending"}</button> </p></li>
              
             ))}
           </ul>
